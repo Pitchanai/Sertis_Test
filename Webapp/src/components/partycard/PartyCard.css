@@ -1,0 +1,10 @@
+.image-cover {
+  height: 200px;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.party-card {
+  display: inline-block;
+  margin-bottom: 20px;
+}

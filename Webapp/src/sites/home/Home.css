@@ -1,0 +1,62 @@
+.Home {
+  height: 100vh;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.home-name {
+  font-size: 6em;
+  font-weight: bold;
+  color: white;
+
+  margin-right: 40px;
+  transform: translateY(-150px);
+}
+
+.home-section {
+  width: 100%;
+}
+
+.home-background {
+  background-position: center;
+  background-repeat: no-repeat;
+  /* background-size: 100% 100%; */
+  background-size: cover;
+}
+
+.title-container {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.8));
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.ant-form {
+  width: 80%;
+}
+
+.form-title {
+  padding-left: 25%;
+  margin-bottom: 20px;
+
+  font-size: 1.75em;
+  font-weight: bold;
+}
+
+@media (max-width: 999px) {
+  .home-background {
+    display: none;
+  }
+}
