@@ -22,6 +22,13 @@ const apiConfig = {
     function: {
       file: '/'
     }
+  },
+  cardAPI: {
+    prefix: baseHref + '/api/card',
+    function: {
+      category: '/category',
+      create: '/create'
+    }
   }
 }
 

@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Tabs, PageHeader } from 'antd'
+import React, { Component, useState } from 'react'
+import { Tabs, PageHeader, Menu, Select } from 'antd'
 import 'antd/dist/antd.css'
 import './CreateParty.css'
 
@@ -8,6 +8,9 @@ import './CreateParty.css'
 import { Form, Input, Button, Upload } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import 'antd/dist/antd.css'
+import { UserCardCategories } from '../../../types/UserCardCategories'
+
+const { Option } = Select
 
 const layout = {
   labelCol: { span: 6 },
@@ -18,53 +21,60 @@ const tailLayout = {
   wrapperCol: { offset: 6, span: 18 },
 }
 
-type CreatePartyProps = {
+type InputCreatePartyProps = {
   reload: any
 }
 
-class CreateParty extends Component<CreatePartyProps> {
-  constructor(props: any) {
+type CreatePartyProps = {
+  reload: any
+  categories: [UserCardCategories?]
+}
+
+class CreateParty extends Component<InputCreatePartyProps, CreatePartyProps> {
+  constructor(props: InputCreatePartyProps) {
     super(props)
+    this.state = { categories: [], reload: props.reload }
     // this.state = { isRegister: false }
-    this.submitForm = this.submitForm.bind(this)
+    // this.submitForm = this.submitForm.bind(this)
+  }
+
+  componentDidMount() {
+    this.getAllCategories()
   }
 
   render() {
     return (
       <div>
         <Form {...layout} name="createPartyForm" onFinish={this.submitForm}>
-          <h2 style={{ marginLeft: '25%', marginBottom: '10px' }}>
-            Create Party
-          </h2>
-          <Form.Item
-            label="ชื่อปาร์ตี้"
-            name="name"
-            rules={[{ required: true, message: 'กรุณาใส่ชื่อปาร์ตี้' }]}
-          >
+
+          <h2 style={{ marginLeft: '25%', marginBottom: '10px' }}>Create card</h2>
+
+          <Form.Item label="FullName" name="name" rules={[{ required: true, message: 'Please input your name.' }]}>
             <Input />
           </Form.Item>
 
-          <Form.Item
-            label="รายละเอียดเพิ่มเติม"
-            name="description"
-            rules={[
-              { required: false, message: 'รายละเอียดเพิ่มเติมของปาร์ตี้' },
-            ]}
-          >
+          {/* <Dropdown overlay={this.me}>
+          </Dropdown> */}
+
+          <Form.Item label="Category" name="category" rules={[{ required: true, message: 'Please select category.' }]}>
+            <Select>
+              {this.state.categories.map((cat) => (
+                <Option key={cat?._id} value={cat?._id!}>{cat?.name}</Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          <Form.Item label="Status" name="status" rules={[{ required: true, message: 'Please input your status.' }]}>
             <Input />
           </Form.Item>
 
-          <Form.Item
-            label="จำนวนคนที่ขาด"
-            name="maxMember"
-            rules={[{ required: true, message: 'กรุณาใส่จำนวนคนที่ขาด' }]}
-          >
+          <Form.Item label="Content" name="content" rules={[{ required: true, message: `Please input your card's content.` }]}>
             <Input />
           </Form.Item>
 
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">
-              สร้างปาร์ตี้
+              Create card
             </Button>
           </Form.Item>
         </Form>
@@ -72,22 +82,40 @@ class CreateParty extends Component<CreatePartyProps> {
     )
   }
 
+  // menu = (
+  //   <Menu>
+  //     {this.state.categories.map((cat) => (
+  //       <Menu.Item key={cat?._id}> {cat?.name} </Menu.Item>
+  //     ))}
+  //   </Menu>
+  // )
+
+  async getAllCategories() {
+    const fetchRequest = await fetch('/api/card/category', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+
+    let response = await fetchRequest.json()
+    console.log('response', response)
+    if (response && response.success && response.body && response.body.length) {
+      this.setState({ categories: response.body })
+    }
+  }
+
   async submitForm(value: any) {
-    const fetchRequest = await fetch('/api/party/create', {
+    console.log('value', value)
+    const fetchRequest = await fetch('/api/card/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({
-        name: value.name,
-        description: value.description,
-        maxMember: value.maxMember,
-      }),
+      body: JSON.stringify(value),
     })
 
     let response = await fetchRequest.json()
     console.log('res', response)
     if (response.success) {
-      this.props.reload()
+      // this.props.reload()
     }
   }
 }
