@@ -47,7 +47,6 @@ class Party extends Component<{}, PartyState> {
     })
 
     let response = await fetchRequest.json()
-    console.log('res', response)
     if (!response.success && response.code == 'L001') {
       this.setState({isHaveToLogin: true})
     }

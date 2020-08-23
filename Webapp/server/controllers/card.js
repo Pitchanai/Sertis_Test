@@ -149,4 +149,25 @@ controller.editCard = async(req, res, next) => {
   }
 }
 
+controller.deleteCard = async(req, res, next) => {
+  try {
+    if (!req.body.id) {
+      res.json({ success: false, message: 'no id.' })
+      return
+    }
+
+    let card = await Card.findOne({_id: req.body.id, owner: req.session.user._id})
+    if (!card) {
+      res.json({success: false, message: 'card not found.'})
+      return
+    }
+
+    await card.deleteOne()
+    res.json({ success: true })
+  } catch (err) {
+    console.log('err deleteCard', err)
+    throw err
+  }
+}
+
 module.exports = controller

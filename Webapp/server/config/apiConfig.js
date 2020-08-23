@@ -31,6 +31,7 @@ const apiConfig = {
       get: '/get',
       create: '/create',
       edit: '/edit',
+      delete: '/delete'
     },
   },
 }

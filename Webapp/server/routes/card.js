@@ -15,5 +15,6 @@ router.get(apiConfig.function.status, isAuthen, controller.getAllStatus)
 router.get(apiConfig.function.get, isAuthen, controller.getCard)
 router.post(apiConfig.function.create, isAuthen, controller.createCard)
 router.post(apiConfig.function.edit, isAuthen, controller.editCard)
+router.post(apiConfig.function.delete, isAuthen, controller.deleteCard)
 
 module.exports = router

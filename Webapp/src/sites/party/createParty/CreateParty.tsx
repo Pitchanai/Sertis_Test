@@ -51,6 +51,7 @@ class CreateParty extends Component<InputCreatePartyProps, CreatePartyProps> {
     super(props)
     this.state = { categories: [], status: [], reload: props.reload }
     this.submitForm = this.submitForm.bind(this)
+    this.deleteCard = this.deleteCard.bind(this)
   }
 
   componentDidMount() {
@@ -114,7 +115,6 @@ class CreateParty extends Component<InputCreatePartyProps, CreatePartyProps> {
     })
 
     let response = await fetchRequest.json()
-    console.log('response', response)
     if (response && response.success && response.body && response.body.length) {
       this.setState({ categories: response.body })
     }
