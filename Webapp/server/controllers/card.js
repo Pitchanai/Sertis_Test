@@ -149,6 +149,10 @@ controller.editCard = async(req, res, next) => {
   }
 }
 
+/**
+ * 
+ * @param {string} id ObjectID of card
+ */
 controller.deleteCard = async(req, res, next) => {
   try {
     if (!req.body.id) {

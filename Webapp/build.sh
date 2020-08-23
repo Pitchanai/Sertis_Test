@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t pitchanai/scb10x-webapp:latest .
+docker build -t pitchanai/sertis-webapp:latest .

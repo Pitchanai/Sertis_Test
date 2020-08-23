@@ -8,10 +8,20 @@ services:
       - "80:80"
       - "443:443"
     container_name: "sertis-nginx"
-    ports:
-      - 80:80
-      - 443:443
     environment:
       - TZ=Asia/Bangkok      
     extra_hosts:
       - "sertis-dev.pitchanai.com:127.0.0.1"
+  webapp:
+    image: pitchanai/sertis-webapp:latest
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    container_name: "sertis-webapp"
+    environment:
+      - PORT=4000
+      - REDIS_HOST=localhost
+      - REDIS_PORT=6379
+      - SESSION_SECRET=sertis
+      - MONGODB_CONNECTIONSTRING=mongodb://user:password@host:port/database?authSource=admin
+      - JWT_SECRET=sertis_secrets
