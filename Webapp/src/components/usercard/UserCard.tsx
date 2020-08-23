@@ -12,10 +12,17 @@ import 'antd/dist/antd.css'
 import { UserCardValueProps } from '../../types/UserCardProps'
 import { CardValueProps } from '../../types/CardValueProps'
 import { debug } from 'console'
+import Modal from 'antd/lib/modal/Modal'
+import CreateParty from '../../sites/party/createParty/CreateParty'
+import { DefaultValueCreatePartyProps } from '../../types/DefaultValueCreatePartyProps'
 
 type UserCardProps = {
   reload: any,
   card: CardValueProps
+}
+
+type UserCardState = {
+  showEditModal: boolean
 }
 
 // type PartyCardProps = {
@@ -23,9 +30,17 @@ type UserCardProps = {
   // reload: any
 // }
 
-class UserCard extends Component<UserCardProps> {
+class UserCard extends Component<UserCardProps, UserCardState> {
   constructor(props: UserCardProps) {
     super(props)
+    this.state = { showEditModal: false }
+  }
+
+  defaultValue: DefaultValueCreatePartyProps = {
+    name: this.props.card.name,
+    content: this.props.card.content,
+    status: this.props.card.status._id,
+    category: this.props.card.category._id
   }
 
   render() {
@@ -34,8 +49,15 @@ class UserCard extends Component<UserCardProps> {
         <div>
           <div className="top-card">
             <b className="card-cat-info">{this.props.card.category.name.toUpperCase()}</b>
-            <div className="status-ring" style={{ backgroundColor: this.props.card.status.color }}>
-              <div className="status-ring-inside"></div>
+            <div className="status-container">
+              {this.props.card.isOwner ? (
+                <Button type="link" onClick={this.showEditModal}>
+                  edit
+                </Button>
+              ) : null}
+              <div className="status-ring" style={{ backgroundColor: this.props.card.status.color }}>
+                <div className="status-ring-inside"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -43,37 +65,39 @@ class UserCard extends Component<UserCardProps> {
         <div className="card-info-container">
           <div className="profile-empty"></div>
           <div className="card-info">
-            <div>{this.props.card.name}</div>
+            <div>
+              <b>{this.props.card.name}</b>
+            </div>
             <div>{this.createdAt.fromNow()}</div>
           </div>
         </div>
+        <Modal
+          title="Edit Card"
+          visible={this.state.showEditModal}
+          onCancel={this.handleCancelModal}
+          footer={[
+            <Button key="back" onClick={this.handleCancelModal}>
+              Cancel
+            </Button>,
+          ]}
+        >
+          <CreateParty reload={() => {}} isEdit={true} defaultValue={this.defaultValue}></CreateParty>
+        </Modal>
       </Card>
     )
   }
 
   createdAt = moment(this.props.card.createdAt)
 
-  // createdAt = this.props.value
+  showEditModal = () => {
+    this.setState({
+      showEditModal: true,
+    })
+  }
 
-  // partyAction = async (event: any) => {
-  //   if (this.props.value.isOwner) {
-  //     return
-  //   }
-
-  //   const fetchUrl = this.props.value.isJoined ? '/api/party/leave' : 'api/party/join'
-  //   console.log(this.props.value)
-  //   const fetchRequest = await fetch(fetchUrl, {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     credentials: 'include',
-  //     body: JSON.stringify({ id: this.props.value.id }),
-  //   })
-
-  //   let response = await fetchRequest.json()
-  //   if (response.success) {
-  //     this.props.reload()
-  //   }
-  // }
+  handleCancelModal = () => {
+    this.setState({ showEditModal: false })
+  }
 }
 
 export default UserCard

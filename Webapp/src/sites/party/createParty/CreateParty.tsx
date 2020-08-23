@@ -10,6 +10,7 @@ import { UploadOutlined } from '@ant-design/icons'
 import 'antd/dist/antd.css'
 import { UserCardCategories } from '../../../types/UserCardCategories'
 import { UserCardStatus } from '../../../types/UserCardStatus'
+import { DefaultValueCreatePartyProps } from '../../../types/DefaultValueCreatePartyProps'
 
 const { Option } = Select
 
@@ -23,7 +24,9 @@ const tailLayout = {
 }
 
 type InputCreatePartyProps = {
-  reload: any
+  reload: any,
+  isEdit: boolean,
+  defaultValue: DefaultValueCreatePartyProps
 }
 
 type CreatePartyProps = {
@@ -33,6 +36,17 @@ type CreatePartyProps = {
 }
 
 class CreateParty extends Component<InputCreatePartyProps, CreatePartyProps> {
+  public static defaultProps = {
+    reload: null,
+    isEdit: false,
+    defaultValue: {
+      name: "",
+      content: "",
+      status: "",
+      category: ""
+    }
+  }
+
   constructor(props: InputCreatePartyProps) {
     super(props)
     this.state = { categories: [], status: [], reload: props.reload }
@@ -49,17 +63,17 @@ class CreateParty extends Component<InputCreatePartyProps, CreatePartyProps> {
     return (
       <div>
         <Form {...layout} name="createPartyForm" onFinish={this.submitForm}>
-          <h2 style={{ marginLeft: '25%', marginBottom: '10px' }}>Create card</h2>
+          {this.props.isEdit ? null : <h2 style={{ marginLeft: '25%', marginBottom: '10px' }}>Create card</h2>}
 
           <Form.Item label="FullName" name="name" rules={[{ required: true, message: 'Please input your name.' }]}>
-            <Input />
+            <Input defaultValue={this.props.isEdit ? this.props.defaultValue.name : ''} />
           </Form.Item>
 
           {/* <Dropdown overlay={this.me}>
           </Dropdown> */}
 
           <Form.Item label="Category" name="category" rules={[{ required: true, message: 'Please select category.' }]}>
-            <Select>
+            <Select defaultValue={this.props.isEdit ? this.props.defaultValue.category : ''}>
               {this.state.categories.map((cat) => (
                 <Option key={cat?._id} value={cat?._id!}>
                   {cat?.name}
@@ -69,7 +83,7 @@ class CreateParty extends Component<InputCreatePartyProps, CreatePartyProps> {
           </Form.Item>
 
           <Form.Item label="Status" name="status" rules={[{ required: true, message: 'Please select status.' }]}>
-            <Select>
+            <Select defaultValue={this.props.isEdit ? this.props.defaultValue.status : ''}>
               {this.state.status.map((cat) => (
                 <Option key={cat?._id} value={cat?._id!}>
                   {cat?.name}
@@ -79,12 +93,12 @@ class CreateParty extends Component<InputCreatePartyProps, CreatePartyProps> {
           </Form.Item>
 
           <Form.Item label="Content" name="content" rules={[{ required: true, message: `Please input your card's content.` }]}>
-            <Input />
+            <Input defaultValue={this.props.isEdit ? this.props.defaultValue.content : ''} />
           </Form.Item>
 
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">
-              Create card
+              {this.props.isEdit ? 'Edit card' : 'Create card'}
             </Button>
           </Form.Item>
         </Form>

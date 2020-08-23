@@ -9,6 +9,11 @@
   color: purple;
 }
 
+.status-container {
+  display: flex;
+  align-items: center;
+}
+
 .status-ring {
   height: 14px;
   width: 14px;

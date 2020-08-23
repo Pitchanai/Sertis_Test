@@ -111,7 +111,7 @@ class Party extends Component<{}, PartyState> {
               </div>
             </TabPane>
             <TabPane tab="สร้างปาร์ตี้" key="3">
-              <CreateParty reload={() => {this.reloadWithChange()}} />
+              <CreateParty reload={() => {this.reloadWithChange()}} isEdit={false} />
             </TabPane>
           </Tabs>
         </div>
