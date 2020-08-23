@@ -59,7 +59,7 @@ controller.getCard = async(req, res, next) => {
  * 
  * @param {string} category ObjectID of category
  * @param {string} name FullName from input
- * @param {string} status Status from input
+ * @param {string} status ObjectID of status
  * @param {string} content Content from input
  */
 controller.createCard = async(req, res, next) => {
@@ -72,6 +72,12 @@ controller.createCard = async(req, res, next) => {
     let category = await Category.find({_id: req.body.category})
     if (!category) {
       res.json({success: false, message: 'category not found.'})
+      return
+    }
+
+    let status = await Status.find({_id: req.body.status})
+    if (!status) {
+      res.json({success: false, message: 'status not found.'})
       return
     }
 
