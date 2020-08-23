@@ -38,23 +38,24 @@ class Party extends Component<{}, PartyState> {
   }
 
   async getAllParty() {
-    const fetchRequest = await fetch('/api/party/all', {
+    const fetchRequest = await fetch('/api/card/get', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
 
     let response = await fetchRequest.json()
+    console.log('res', response)
     if (!response.success && response.code == 'L001') {
       this.setState({isHaveToLogin: true})
     }
     let joinedParty = []
-    if (response.body) {
-      joinedParty = response.body.filter((party: any) => party.isJoined)
-    }
-    this.setState({ allParty: response.body, joinedParty: joinedParty })
-    if (response.body.length == 0) {
-      this.setState({ tabActiveKey: '3' })
-    }
+    // if (response.body) {
+    //   joinedParty = response.body.filter((party: any) => party.isJoined)
+    // }
+    // this.setState({ allParty: response.body, joinedParty: joinedParty })
+    // if (response.body.length == 0) {
+    //   this.setState({ tabActiveKey: '3' })
+    // }
   }
 
   render() {

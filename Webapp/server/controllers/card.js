@@ -20,6 +20,23 @@ controller.getAllCategories = async(req, res, next) => {
   }
 }
 
+controller.getCard = async(req, res, next) => {
+  try {
+    let allCards = await Card.find({}).populate('category')
+    let returnBody = allCards.map(card => {
+      let jsonCard = card.toJSON()
+      jsonCard.isOwner = jsonCard.owner == req.session.user._id
+      delete jsonCard.owner
+      return jsonCard
+    })
+    
+    res.json({success: true, body: returnBody})
+  } catch (err) {
+    console.log('err getCard', err)
+    throw err
+  }
+}
+
 /**
  * 
  * @param {string} category ObjectID of category
