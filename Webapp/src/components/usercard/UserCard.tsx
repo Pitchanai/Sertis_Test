@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Tabs, PageHeader, Card } from 'antd'
+import moment from 'moment'
 import 'antd/dist/antd.css'
 import './UserCard.css'
 
@@ -10,6 +11,7 @@ import 'antd/dist/antd.css'
 
 import { UserCardValueProps } from '../../types/UserCardProps'
 import { CardValueProps } from '../../types/CardValueProps'
+import { debug } from 'console'
 
 type UserCardProps = {
   reload: any,
@@ -24,8 +26,6 @@ type UserCardProps = {
 class UserCard extends Component<UserCardProps> {
   constructor(props: UserCardProps) {
     super(props)
-    // this.state = {reload: props.reload, card: props.card}
-    // this.state = { isRegister: false }
   }
 
   render() {
@@ -33,15 +33,27 @@ class UserCard extends Component<UserCardProps> {
       <Card hoverable style={{ width: 300 }}>
         <div>
           <div className="top-card">
-            <b>{this.props.card.category.name.toUpperCase()}</b>
-            <div className="status-ring" style={{backgroundColor: this.props.card.status.color}}></div>
+            <b className="card-cat-info">{this.props.card.category.name.toUpperCase()}</b>
+            <div className="status-ring" style={{ backgroundColor: this.props.card.status.color }}>
+              <div className="status-ring-inside"></div>
+            </div>
           </div>
         </div>
         <p className="content-text">{this.props.card.content}</p>
-        <h4>{this.props.card.name}</h4>
+        <div className="card-info-container">
+          <div className="profile-empty"></div>
+          <div className="card-info">
+            <div>{this.props.card.name}</div>
+            <div>{this.createdAt.fromNow()}</div>
+          </div>
+        </div>
       </Card>
     )
   }
+
+  createdAt = moment(this.props.card.createdAt)
+
+  // createdAt = this.props.value
 
   // partyAction = async (event: any) => {
   //   if (this.props.value.isOwner) {

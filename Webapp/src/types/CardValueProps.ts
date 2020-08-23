@@ -7,5 +7,6 @@ export type CardValueProps = {
   name: string,
   status: UserCardStatus,
   content: string,
-  category: UserCardCategories
+  category: UserCardCategories,
+  createdAt: string
 }

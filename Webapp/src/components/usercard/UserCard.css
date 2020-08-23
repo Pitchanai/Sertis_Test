@@ -5,12 +5,44 @@
   margin-bottom: 1em;
 }
 
+.card-cat-info {
+  color: purple;
+}
+
 .status-ring {
-  height: 10px;
-  width: 10px;
-  border-radius: 10px;
+  height: 14px;
+  width: 14px;
+  border-radius: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-ring-inside {
+  height: 8px;
+  width: 8px;
+  border-radius: 8px;
+  background-color: white;
 }
 
 .content-text {
   font-size: 1.4em;
+}
+
+.profile-empty {
+  width: 32px;
+  height: 32px;
+  border-radius: 32px;
+  background-color: lightgray;
+  margin-right: 1em;
+}
+
+.card-info-container {
+  display: flex;
+  align-items: center;
+}
+
+.card-info {
+  font-size: 0.9em;
 }

@@ -43,6 +43,7 @@ controller.getCard = async(req, res, next) => {
     let allCards = await Card.find({}).populate('category').populate('status')
     let returnBody = allCards.map(card => {
       let jsonCard = card.toJSON()
+      jsonCard.createdAt = card._id.getTimestamp()
       jsonCard.isOwner = jsonCard.owner == req.session.user._id
       delete jsonCard.owner
       return jsonCard
