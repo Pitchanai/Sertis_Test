@@ -9,7 +9,6 @@ import './UserCard.css'
 import { Form, Input, Button, Checkbox } from 'antd'
 import 'antd/dist/antd.css'
 
-import { UserCardValueProps } from '../../types/UserCardProps'
 import { CardValueProps } from '../../types/CardValueProps'
 import { debug } from 'console'
 import Modal from 'antd/lib/modal/Modal'
