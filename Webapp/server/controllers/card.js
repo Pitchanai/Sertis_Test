@@ -20,6 +20,9 @@ controller.getAllCategories = async(req, res, next) => {
   }
 }
 
+/**
+ * @description Get all cards
+ */
 controller.getCard = async(req, res, next) => {
   try {
     let allCards = await Card.find({}).populate('category')
@@ -29,7 +32,7 @@ controller.getCard = async(req, res, next) => {
       delete jsonCard.owner
       return jsonCard
     })
-    
+
     res.json({success: true, body: returnBody})
   } catch (err) {
     console.log('err getCard', err)
