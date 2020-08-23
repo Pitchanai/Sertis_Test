@@ -30,40 +30,16 @@ class UserCard extends Component<UserCardProps> {
 
   render() {
     return (
-      <Card
-        hoverable
-        style={{ width: 300}}
-        >
-          <h4>{this.props.card.name}</h4>
-          <p>{this.props.card.content}</p>
-        </Card>
-      // // <div>
-      // //   {this.props.value.name}
-      // // </div>
-      // <Card
-      //   hoverable
-      //   style={{ width: 300 }}
-      //   cover={<img alt={this.props.value.name} src="sample-images/events.jpg" className="image-cover" />}
-      //   className="party-card"
-      // >
-      //   <h4>{this.props.value.name}</h4>
-      //   <p>{this.props.value.description}</p>
-      //   <div className="card-action-container">
-      //     <div>
-      //       {this.props.value.joinedMember}/{this.props.value.maxMember}
-      //     </div>
-      //     <div>
-      //       <Button
-      //         danger={this.props.value.isJoined}
-      //         disabled={this.props.value.isOwner || this.props.value.joinedMember == this.props.value.maxMember}
-      //         onClick={this.partyAction}
-      //         type="primary"
-      //       >
-      //         {this.props.value.isJoined ? 'ออกจากปาร์ตี้' : this.props.value.isOwner ? 'เจ้าของปาร์ตี้' : 'เข้าร่วม'}
-      //       </Button>
-      //     </div>
-      //   </div>
-      // </Card>
+      <Card hoverable style={{ width: 300 }}>
+        <div>
+          <div className="top-card">
+            <b>{this.props.card.category.name.toUpperCase()}</b>
+            <div className="status-ring" style={{backgroundColor: this.props.card.status.color}}></div>
+          </div>
+        </div>
+        <p className="content-text">{this.props.card.content}</p>
+        <h4>{this.props.card.name}</h4>
+      </Card>
     )
   }
 

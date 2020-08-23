@@ -9,13 +9,15 @@ let schema = new Schema({
   category: {
     type: Schema.Types.ObjectId,
     ref: 'categories',
+    required: true
   },
   name: {
     type: String,
     required: true,
   },
   status: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'status',
     required: true,
   },
   content: {

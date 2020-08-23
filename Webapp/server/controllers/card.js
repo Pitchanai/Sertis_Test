@@ -1,6 +1,7 @@
 const config = require('../config/serverConfig')
 const Category = require('../models/categories')
 const Card = require('../models/card')
+const Status = require('../models/status')
 
 const controller = {}
 
@@ -21,11 +22,25 @@ controller.getAllCategories = async(req, res, next) => {
 }
 
 /**
+ * @description Get all status
+ */
+
+controller.getAllStatus = async(req, res, next) => {
+  try {
+    let allStatus = await Status.find({})
+    res.json({ success: true, body: allStatus })
+  } catch (err) {
+    console.log('err', err)
+    throw err
+  }
+}
+
+/**
  * @description Get all cards
  */
 controller.getCard = async(req, res, next) => {
   try {
-    let allCards = await Card.find({}).populate('category')
+    let allCards = await Card.find({}).populate('category').populate('status')
     let returnBody = allCards.map(card => {
       let jsonCard = card.toJSON()
       jsonCard.isOwner = jsonCard.owner == req.session.user._id

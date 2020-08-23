@@ -9,6 +9,7 @@ import { Form, Input, Button, Upload } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import 'antd/dist/antd.css'
 import { UserCardCategories } from '../../../types/UserCardCategories'
+import { UserCardStatus } from '../../../types/UserCardStatus'
 
 const { Option } = Select
 
@@ -28,25 +29,26 @@ type InputCreatePartyProps = {
 type CreatePartyProps = {
   reload: any
   categories: [UserCardCategories?]
+  status: [UserCardStatus?]
 }
 
 class CreateParty extends Component<InputCreatePartyProps, CreatePartyProps> {
   constructor(props: InputCreatePartyProps) {
     super(props)
-    this.state = { categories: [], reload: props.reload }
+    this.state = { categories: [], status: [], reload: props.reload }
     // this.state = { isRegister: false }
     // this.submitForm = this.submitForm.bind(this)
   }
 
   componentDidMount() {
     this.getAllCategories()
+    this.getAllStatus()
   }
 
   render() {
     return (
       <div>
         <Form {...layout} name="createPartyForm" onFinish={this.submitForm}>
-
           <h2 style={{ marginLeft: '25%', marginBottom: '10px' }}>Create card</h2>
 
           <Form.Item label="FullName" name="name" rules={[{ required: true, message: 'Please input your name.' }]}>
@@ -59,13 +61,21 @@ class CreateParty extends Component<InputCreatePartyProps, CreatePartyProps> {
           <Form.Item label="Category" name="category" rules={[{ required: true, message: 'Please select category.' }]}>
             <Select>
               {this.state.categories.map((cat) => (
-                <Option key={cat?._id} value={cat?._id!}>{cat?.name}</Option>
+                <Option key={cat?._id} value={cat?._id!}>
+                  {cat?.name}
+                </Option>
               ))}
             </Select>
           </Form.Item>
 
-          <Form.Item label="Status" name="status" rules={[{ required: true, message: 'Please input your status.' }]}>
-            <Input />
+          <Form.Item label="Status" name="status" rules={[{ required: true, message: 'Please select status.' }]}>
+            <Select>
+              {this.state.status.map((cat) => (
+                <Option key={cat?._id} value={cat?._id!}>
+                  {cat?.name}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
 
           <Form.Item label="Content" name="content" rules={[{ required: true, message: `Please input your card's content.` }]}>
@@ -100,6 +110,19 @@ class CreateParty extends Component<InputCreatePartyProps, CreatePartyProps> {
     console.log('response', response)
     if (response && response.success && response.body && response.body.length) {
       this.setState({ categories: response.body })
+    }
+  }
+
+  async getAllStatus() {
+    const fetchRequest = await fetch('/api/card/status', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+
+    let response = await fetchRequest.json()
+    console.log('response', response)
+    if (response && response.success && response.body && response.body.length) {
+      this.setState({ status: response.body })
     }
   }
 

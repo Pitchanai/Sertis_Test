@@ -85,6 +85,7 @@ class Party extends Component<{}, PartyState> {
                 {(this.state.allCard || []).map((value, index) => {
                   return (
                     <UserCard
+                      key={value._id}
                       card={value}
                       reload={() => {
                         this.reload()
@@ -99,6 +100,7 @@ class Party extends Component<{}, PartyState> {
                 {(this.state.myCard || []).map((value, index) => {
                   return (
                     <UserCard
+                      key={value._id}
                       card={value}
                       reload={() => {
                         this.reload()
