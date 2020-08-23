@@ -9,16 +9,20 @@ import { Form, Input, Button, Checkbox } from 'antd'
 import 'antd/dist/antd.css'
 
 import PartyCard from '../../components/partycard/PartyCard'
+import UserCard from '../../components/usercard/UserCard'
 import CreateParty from './createParty/CreateParty'
 
-import { PartyCardValueProps } from '../../types/PartyCardProps'
+// import { PartyCardValueProps } from '../../types/PartyCardProps'
 import { join } from 'path'
 import { Redirect } from 'react-router-dom'
+import { CardValueProps } from '../../types/CardValueProps'
 
 const { TabPane } = Tabs
 interface PartyState {
-  allParty: Array<PartyCardValueProps>,
-  joinedParty: Array<PartyCardValueProps>,
+  // allParty: Array<PartyCardValueProps>,
+  // joinedParty: Array<PartyCardValueProps>,
+  allCard: Array<CardValueProps>,
+  myCard: Array<CardValueProps>,
   isHaveToLogin: boolean,
   tabActiveKey: string
 }
@@ -26,7 +30,7 @@ interface PartyState {
 class Party extends Component<{}, PartyState> {
   constructor(props: any) {
     super(props)
-    this.state = { allParty: [], joinedParty: [], isHaveToLogin: false, tabActiveKey: '1' }
+    this.state = { allCard: [], myCard: [], isHaveToLogin: false, tabActiveKey: '1' }
 
     this.onSignout = this.onSignout.bind(this)
     this.onTabChange = this.onTabChange.bind(this)
@@ -48,14 +52,16 @@ class Party extends Component<{}, PartyState> {
     if (!response.success && response.code == 'L001') {
       this.setState({isHaveToLogin: true})
     }
-    let joinedParty = []
-    // if (response.body) {
-    //   joinedParty = response.body.filter((party: any) => party.isJoined)
-    // }
-    // this.setState({ allParty: response.body, joinedParty: joinedParty })
-    // if (response.body.length == 0) {
-    //   this.setState({ tabActiveKey: '3' })
-    // }
+
+    let myCard = []
+    if (response.body) {
+      myCard = response.body.filter((card: CardValueProps) => card.isOwner)
+    }
+    this.setState({ allCard: response.body, myCard: myCard })
+
+    if (response.body.length == 0) {
+      this.setState({tabActiveKey: '3'})
+    }
   }
 
   render() {
@@ -76,15 +82,29 @@ class Party extends Component<{}, PartyState> {
           <Tabs defaultActiveKey="1" activeKey={this.state.tabActiveKey} onChange={this.onTabChange}>
             <TabPane tab="ปาร์ตี้ทั้งหมด" key="1">
               <div className="party-card-container">
-                {(this.state.allParty || []).map((value, index) => {
-                  return <PartyCard value={value} reload={() => {this.reload()}}></PartyCard>
+                {(this.state.allCard || []).map((value, index) => {
+                  return (
+                    <UserCard
+                      card={value}
+                      reload={() => {
+                        this.reload()
+                      }}
+                    ></UserCard>
+                  )
                 })}
               </div>
             </TabPane>
             <TabPane tab="ปาร์ตี้ที่เข้าร่วม" key="2">
               <div className="party-card-container">
-                {(this.state.joinedParty || []).map((value, index) => {
-                  return <PartyCard value={value} reload={() => {this.reload()}}></PartyCard>
+                {(this.state.myCard || []).map((value, index) => {
+                  return (
+                    <UserCard
+                      card={value}
+                      reload={() => {
+                        this.reload()
+                      }}
+                    ></UserCard>
+                  )
                 })}
               </div>
             </TabPane>

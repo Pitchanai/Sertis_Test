@@ -9,9 +9,11 @@ import { Form, Input, Button, Checkbox } from 'antd'
 import 'antd/dist/antd.css'
 
 import { UserCardValueProps } from '../../types/UserCardProps'
+import { CardValueProps } from '../../types/CardValueProps'
 
 type UserCardProps = {
-  reload: any
+  reload: any,
+  card: CardValueProps
 }
 
 // type PartyCardProps = {
@@ -22,6 +24,7 @@ type UserCardProps = {
 class UserCard extends Component<UserCardProps> {
   constructor(props: UserCardProps) {
     super(props)
+    // this.state = {reload: props.reload, card: props.card}
     // this.state = { isRegister: false }
   }
 
@@ -31,8 +34,8 @@ class UserCard extends Component<UserCardProps> {
         hoverable
         style={{ width: 300}}
         >
-          <h4>Test Cards</h4>
-          <p>description</p>
+          <h4>{this.props.card.name}</h4>
+          <p>{this.props.card.content}</p>
         </Card>
       // // <div>
       // //   {this.props.value.name}
