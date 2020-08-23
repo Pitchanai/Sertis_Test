@@ -100,4 +100,53 @@ controller.createCard = async(req, res, next) => {
   }
 }
 
+/**
+ * @param {string} id ObjectID of this card
+ * @param {string} category ObjectID of category
+ * @param {string} name FullName from input
+ * @param {string} status ObjectID of status
+ * @param {string} content Content from input
+ */
+controller.editCard = async(req, res, next) => {
+  try {
+    if (!req.body.id && !req.body.category && !req.body.name && !req.body.status && !req.body.content) {
+      res.json({success: false, message: 'No category or name or status or content.'})
+      return
+    }
+
+    let card = await Card.findOne({_id: req.body.id, owner: req.session.user._id})
+    if (!card) {
+      res.json({success: false, message: `you're not the owner.`})
+      return
+    }
+
+    let category = await Category.find({_id: req.body.category})
+    if (!category) {
+      res.json({success: false, message: 'category not found.'})
+      return
+    }
+
+    let status = await Status.find({_id: req.body.status})
+    if (!status) {
+      res.json({success: false, message: 'status not found.'})
+      return
+    }
+
+    console.log(card)
+    
+    card.name = req.body.name
+    card.status = req.body.status
+    card.category = req.body.category
+    card.content = req.body.content
+
+    await card.save()
+    res.json({ success: true })
+    return
+
+  } catch (err) {
+    console.log('err createCard', err)
+    throw err
+  }
+}
+
 module.exports = controller

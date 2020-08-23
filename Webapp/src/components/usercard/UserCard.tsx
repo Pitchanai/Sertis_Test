@@ -40,37 +40,43 @@ class UserCard extends Component<UserCardProps, UserCardState> {
     name: this.props.card.name,
     content: this.props.card.content,
     status: this.props.card.status._id,
-    category: this.props.card.category._id
+    category: this.props.card.category._id,
+    id: this.props.card._id
   }
 
   render() {
     return (
-      <Card hoverable style={{ width: 300 }}>
-        <div>
-          <div className="top-card">
-            <b className="card-cat-info">{this.props.card.category.name.toUpperCase()}</b>
-            <div className="status-container">
-              {this.props.card.isOwner ? (
-                <Button type="link" onClick={this.showEditModal}>
-                  edit
-                </Button>
-              ) : null}
-              <div className="status-ring" style={{ backgroundColor: this.props.card.status.color }}>
-                <div className="status-ring-inside"></div>
+      <Card hoverable style={{ width: 300, marginBottom: '10px' }}>
+        <div className="card-container">
+          <div className="card-top-container">
+            <div>
+              <div className="top-card">
+                <b className="card-cat-info">{this.props.card.category.name.toUpperCase()}</b>
+                <div className="status-container">
+                  {this.props.card.isOwner ? (
+                    <Button type="link" onClick={this.showEditModal}>
+                      edit
+                    </Button>
+                  ) : null}
+                  <div className="status-ring" style={{ backgroundColor: this.props.card.status.color }}>
+                    <div className="status-ring-inside"></div>
+                  </div>
+                </div>
               </div>
             </div>
+            <p className="content-text">{this.props.card.content}</p>
           </div>
-        </div>
-        <p className="content-text">{this.props.card.content}</p>
-        <div className="card-info-container">
-          <div className="profile-empty"></div>
-          <div className="card-info">
-            <div>
-              <b>{this.props.card.name}</b>
+          <div className="card-info-container">
+            <div className="profile-empty"></div>
+            <div className="card-info">
+              <div>
+                <b>{this.props.card.name}</b>
+              </div>
+              <div>{this.createdAt.fromNow()}</div>
             </div>
-            <div>{this.createdAt.fromNow()}</div>
           </div>
         </div>
+
         <Modal
           title="Edit Card"
           visible={this.state.showEditModal}
@@ -81,7 +87,14 @@ class UserCard extends Component<UserCardProps, UserCardState> {
             </Button>,
           ]}
         >
-          <CreateParty reload={() => {}} isEdit={true} defaultValue={this.defaultValue}></CreateParty>
+          <CreateParty
+            reload={() => {
+              this.props.reload()
+              this.handleCancelModal()
+            }}
+            isEdit={true}
+            defaultValue={this.defaultValue}
+          ></CreateParty>
         </Modal>
       </Card>
     )

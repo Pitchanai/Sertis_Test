@@ -3,4 +3,5 @@ export type DefaultValueCreatePartyProps = {
   content: string
   status: string
   category: string
+  id: string
 }

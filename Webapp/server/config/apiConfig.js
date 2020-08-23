@@ -5,8 +5,8 @@ const apiConfig = {
     function: {
       test: '/test',
       signin: '/signin',
-      signup: '/signup'
-    }
+      signup: '/signup',
+    },
   },
   partyAPI: {
     prefix: baseHref + '/api/party',
@@ -15,13 +15,13 @@ const apiConfig = {
       create: '/create',
       join: '/join',
       leave: '/leave',
-    }
+    },
   },
   staticAPI: {
     prefix: baseHref + '/api/static',
     function: {
-      file: '/'
-    }
+      file: '/',
+    },
   },
   cardAPI: {
     prefix: baseHref + '/api/card',
@@ -29,9 +29,10 @@ const apiConfig = {
       category: '/category',
       status: '/status',
       get: '/get',
-      create: '/create'
-    }
-  }
+      create: '/create',
+      edit: '/edit',
+    },
+  },
 }
 
 module.exports = apiConfig

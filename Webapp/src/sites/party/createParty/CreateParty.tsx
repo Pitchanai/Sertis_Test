@@ -40,18 +40,17 @@ class CreateParty extends Component<InputCreatePartyProps, CreatePartyProps> {
     reload: null,
     isEdit: false,
     defaultValue: {
-      name: "",
-      content: "",
-      status: "",
-      category: ""
+      name: '',
+      content: '',
+      status: '',
+      category: '',
     }
   }
 
   constructor(props: InputCreatePartyProps) {
     super(props)
     this.state = { categories: [], status: [], reload: props.reload }
-    // this.state = { isRegister: false }
-    // this.submitForm = this.submitForm.bind(this)
+    this.submitForm = this.submitForm.bind(this)
   }
 
   componentDidMount() {
@@ -62,18 +61,15 @@ class CreateParty extends Component<InputCreatePartyProps, CreatePartyProps> {
   render() {
     return (
       <div>
-        <Form {...layout} name="createPartyForm" onFinish={this.submitForm}>
+        <Form {...layout} name="createPartyForm" onFinish={this.submitForm} initialValues={this.props.defaultValue}>
           {this.props.isEdit ? null : <h2 style={{ marginLeft: '25%', marginBottom: '10px' }}>Create card</h2>}
 
           <Form.Item label="FullName" name="name" rules={[{ required: true, message: 'Please input your name.' }]}>
-            <Input defaultValue={this.props.isEdit ? this.props.defaultValue.name : ''} />
+            <Input />
           </Form.Item>
 
-          {/* <Dropdown overlay={this.me}>
-          </Dropdown> */}
-
           <Form.Item label="Category" name="category" rules={[{ required: true, message: 'Please select category.' }]}>
-            <Select defaultValue={this.props.isEdit ? this.props.defaultValue.category : ''}>
+            <Select>
               {this.state.categories.map((cat) => (
                 <Option key={cat?._id} value={cat?._id!}>
                   {cat?.name}
@@ -83,7 +79,7 @@ class CreateParty extends Component<InputCreatePartyProps, CreatePartyProps> {
           </Form.Item>
 
           <Form.Item label="Status" name="status" rules={[{ required: true, message: 'Please select status.' }]}>
-            <Select defaultValue={this.props.isEdit ? this.props.defaultValue.status : ''}>
+            <Select>
               {this.state.status.map((cat) => (
                 <Option key={cat?._id} value={cat?._id!}>
                   {cat?.name}
@@ -93,26 +89,23 @@ class CreateParty extends Component<InputCreatePartyProps, CreatePartyProps> {
           </Form.Item>
 
           <Form.Item label="Content" name="content" rules={[{ required: true, message: `Please input your card's content.` }]}>
-            <Input defaultValue={this.props.isEdit ? this.props.defaultValue.content : ''} />
+            <Input />
           </Form.Item>
 
           <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" style={{ marginRight: '6px' }}>
               {this.props.isEdit ? 'Edit card' : 'Create card'}
             </Button>
+            {this.props.isEdit ? (
+              <Button type="primary" danger onClick={this.deleteCard}>
+                Delete
+              </Button>
+            ) : null}
           </Form.Item>
         </Form>
       </div>
     )
   }
-
-  // menu = (
-  //   <Menu>
-  //     {this.state.categories.map((cat) => (
-  //       <Menu.Item key={cat?._id}> {cat?.name} </Menu.Item>
-  //     ))}
-  //   </Menu>
-  // )
 
   async getAllCategories() {
     const fetchRequest = await fetch('/api/card/category', {
@@ -134,15 +127,17 @@ class CreateParty extends Component<InputCreatePartyProps, CreatePartyProps> {
     })
 
     let response = await fetchRequest.json()
-    console.log('response', response)
     if (response && response.success && response.body && response.body.length) {
       this.setState({ status: response.body })
     }
   }
 
   async submitForm(value: any) {
-    console.log('value', value)
-    const fetchRequest = await fetch('/api/card/create', {
+    if (this.props.isEdit) {
+      value.id = this.props.defaultValue.id
+    }
+
+    const fetchRequest = await fetch(this.props.isEdit ? 'api/card/edit' : '/api/card/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -150,9 +145,28 @@ class CreateParty extends Component<InputCreatePartyProps, CreatePartyProps> {
     })
 
     let response = await fetchRequest.json()
-    console.log('res', response)
     if (response.success) {
-      // this.props.reload()
+      this.props.reload()
+    }
+  }
+
+  async deleteCard() {
+    if (!this.props.isEdit) {
+      return
+    }
+
+    const body = {id: this.props.defaultValue.id}
+
+    const fetchRequest = await fetch('api/card/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(body),
+    })
+
+    let response = await fetchRequest.json()
+    if (response.success) {
+      this.props.reload()
     }
   }
 }

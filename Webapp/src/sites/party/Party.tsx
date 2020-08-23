@@ -8,7 +8,6 @@ import './Party.css'
 import { Form, Input, Button, Checkbox } from 'antd'
 import 'antd/dist/antd.css'
 
-import PartyCard from '../../components/partycard/PartyCard'
 import UserCard from '../../components/usercard/UserCard'
 import CreateParty from './createParty/CreateParty'
 
@@ -70,7 +69,7 @@ class Party extends Component<{}, PartyState> {
         <PageHeader
           className="Party"
           onBack={this.onSignout}
-          title="PartyHaan"
+          title="Sertis"
           subTitle="Welcome, user"
           extra={[
             <Button key="1" type="primary" onClick={this.onSignout}>
@@ -80,7 +79,7 @@ class Party extends Component<{}, PartyState> {
         />
         <div className="party-container">
           <Tabs defaultActiveKey="1" activeKey={this.state.tabActiveKey} onChange={this.onTabChange}>
-            <TabPane tab="ปาร์ตี้ทั้งหมด" key="1">
+            <TabPane tab="Activity" key="1">
               <div className="party-card-container">
                 {(this.state.allCard || []).map((value, index) => {
                   return (
@@ -95,7 +94,7 @@ class Party extends Component<{}, PartyState> {
                 })}
               </div>
             </TabPane>
-            <TabPane tab="ปาร์ตี้ที่เข้าร่วม" key="2">
+            <TabPane tab="My Cards" key="2">
               <div className="party-card-container">
                 {(this.state.myCard || []).map((value, index) => {
                   return (
@@ -110,7 +109,7 @@ class Party extends Component<{}, PartyState> {
                 })}
               </div>
             </TabPane>
-            <TabPane tab="สร้างปาร์ตี้" key="3">
+            <TabPane tab="Create" key="3">
               <CreateParty reload={() => {this.reloadWithChange()}} isEdit={false} />
             </TabPane>
           </Tabs>
