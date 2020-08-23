@@ -20,8 +20,24 @@ services:
     container_name: "sertis-webapp"
     environment:
       - PORT=4000
-      - REDIS_HOST=localhost
+      - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SESSION_SECRET=sertis
-      - MONGODB_CONNECTIONSTRING=mongodb://user:password@host:port/database?authSource=admin
+      - MONGODB_CONNECTIONSTRING=mongodb://sertis:sertis_password@mongo-database:27017/sertis?authSource=admin
       - JWT_SECRET=sertis_secrets
+  redis:
+    image: "redis:latest"
+    container_name: "redis"
+    restart: unless-stopped
+  mongo-database:
+    image: "mongo:4.2.7-bionic"
+    container_name: "mongo-database"
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: sertis
+      MONGO_INITDB_ROOT_PASSWORD: sertis_password
+    volumes:
+      - mongodb-data:/data/db
+    ports:
+      - 27017:27017
+    command: mongod --auth
