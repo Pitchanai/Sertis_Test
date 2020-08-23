@@ -8,15 +8,6 @@ const apiConfig = {
       signup: '/signup',
     },
   },
-  partyAPI: {
-    prefix: baseHref + '/api/party',
-    function: {
-      all: '/all',
-      create: '/create',
-      join: '/join',
-      leave: '/leave',
-    },
-  },
   staticAPI: {
     prefix: baseHref + '/api/static',
     function: {

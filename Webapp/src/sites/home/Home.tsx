@@ -49,7 +49,7 @@ class Home extends Component<{}, HomeState> {
           className="home-background home-section"
         >
           <div className="title-container">
-            <div className="home-name">PartyHaan</div>
+            <div className="home-name">Sertis</div>
           </div>
         </div>
         <div className="home-section">
